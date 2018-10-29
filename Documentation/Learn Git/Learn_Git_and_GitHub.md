@@ -27,9 +27,9 @@ Whenever and however you use Git you should follow these steps:
 
 For Example via the Command Line:
 
-`git pull https://github.com/RIT-Space-Exploration/Rovers` 
+- `git pull https://github.com/RIT-Space-Exploration/Rovers` 
 
-*** some changes ***
+- *** some changes ***
 
 - `git add -A` - Add all the files that were changed. You can specify specific files instead of `-A` if necessary
 
