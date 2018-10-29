@@ -26,11 +26,17 @@ Whenever and however you use Git you should follow these steps:
 - Git Push: Send the changes to remote with the commit messages. 
 
 For Example via the Command Line:
+
 `git pull https://github.com/RIT-Space-Exploration/Rovers` 
+
 *** some changes ***
+
 `git add -A` - Add all the files that were changed. You can specify specific files instead of `-A` if necessary
+
 `git commit` - Makes a commit. It will open up vi to make the changes just hit `i`, type the changes, an then `:wq` to write them and quit. 
+
 `git push` - pushes the changes to remote.
+
 All of this can be done in the GitGUI or GitHub Desktop App via buttons.
 
 ### What do I use Git with?
