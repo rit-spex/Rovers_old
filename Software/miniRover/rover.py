@@ -1,25 +1,34 @@
-# Core rover script for user I/O on the roverPi
-# this is a top-level init/process control file, all processes should be separate and executed here.
-# Authors: Alexander Olds,
-
+"""
+Core rover script for user I/O on the roverPi
+this is a top-level init/process control file, all processes should be separate and executed here.
+Authors: Alexander Olds,
+"""
 
 # Package Imports
-from evdev import *
+import pygame
 
 # Local Imports
-import drivetrain
+from drivetrain import *
 
-# Initialization
-print("Initializing...")
 
-drive = drivetrain()
-controller = InputDevice('dev/input/event3')  # Placeholder path
+def __main__():
+    # Initialization
+    print("Initializing...")
 
-print("Connected to" + controller)
+    pygame.joystick.init()
 
-print("Initialization Complete")
+    drive = drivetrain()
 
-# Main control loop
-while True:
-    for event in controller.read_loop():
-        print(event)
+    controller = pygame.joystick.Joystick(0)
+    controller.init()
+
+    print("Connected to" + controller.get_name())
+
+    print("Initialization Complete")
+
+    # Main control loop
+    while True:
+        pygame.event.pump()
+        drive.move(controller.getAxis(0), controller.getAxis(1))
+
+        # TODO: add more functionality than movement

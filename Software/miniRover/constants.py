@@ -1,9 +1,11 @@
-# Constants file for miniRover
-# For clarity, contains all constants (usually port numbers)
-# Authors: Alexander Olds,
-
+"""
+Constants file for miniRover
+For clarity, contains all constants (usually port numbers)
+Authors: Alexander Olds,
+"""
 
 # Drive Motors
+# TODO: Verify Motor and servo port #s
 LF_PORT = 0  # Front-Left
 LC_PORT = 1  # Central-Left
 LR_PORT = 3  # Rear-Left
@@ -20,6 +22,7 @@ CS_RF_PORT = 9  # Front-Right
 CS_RR_PORT = 10  # Rear-Right
 
 # Controller input codes (may need to be changed for different controllers)
+# TODO: Verify controller input codes
 IN_A = 1
 IN_B = 1
 IN_X = 1
