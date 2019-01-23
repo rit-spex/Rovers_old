@@ -9,18 +9,30 @@ import pygame
 
 # Local Imports
 from drivetrain import *
+from sensors import *
 
-
-def __main__():
+if __name__ == '__main__':
     # Initialization
-    print("Initializing...")
 
+    print("Initializing Pygame...", end='')
     pygame.joystick.init()
+    print("Done")
 
+    print("Initializing Sensors...", end='')
+    sensors = Sensors()
+    print("Done")
+
+    print("Establishing GPS uplink...")
+    sensors.uplink()
+
+    print("Initializing Drivetrain...", end='')
     drive = drivetrain()
+    print("Done")
 
+    print("Initializing Controllers...", end='')
     controller = pygame.joystick.Joystick(0)
     controller.init()
+    print("Done")
 
     print("Connected to" + controller.get_name())
 
@@ -28,7 +40,12 @@ def __main__():
 
     # Main control loop
     while True:
+        sensors.print()
+
+        # update & pull controller inputs
         pygame.event.pump()
+
+        # send inputs to drive
         drive.move(controller.getAxis(0), controller.getAxis(1))
 
-        # TODO: add more functionality than movement
+        # TODO: add more drive functionality than movement

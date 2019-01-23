@@ -4,6 +4,9 @@ For clarity, contains all constants (usually port numbers)
 Authors: Alexander Olds,
 """
 
+# DEBUG
+DEBUG = True
+
 # Drive Motors
 # TODO: Verify Motor and servo port #s
 LF_PORT = 0  # Front-Left
@@ -37,3 +40,5 @@ IN_RB = 1
 IN_LB = 1
 IN_START = 1
 IN_SEL = 1
+
+# Sensor-related pins
