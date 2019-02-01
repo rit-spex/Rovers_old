@@ -12,6 +12,13 @@
       <paths name="pi@spexrover.student.rit.edu:22">
         <serverdata>
           <mappings>
+            <mapping deploy="home/pi/Rovers/Software/miniRover" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="pi@spexrover.student.rit.edu:22 (1)">
+        <serverdata>
+          <mappings>
             <mapping deploy="/home/pi/CodeBases/Software/miniRover" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>

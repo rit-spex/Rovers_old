@@ -9,8 +9,8 @@ import time
 import adafruit_gps
 import serial
 
+
 # local imports
-from constants import *
 
 
 # TODO: Implement other sensors
@@ -25,19 +25,19 @@ class Sensors:
         self.current = 0
 
         # data
-        self.uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=3000)  # Assume GPS connected via USB
+        self.uart = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3000)  # Assume GPS connected via USB
 
         # object instantiation
-        self.gps = adafruit_gps.GPS(self.uart, debug=DEBUG)
+        self.gps = adafruit_gps.GPS(self.uart, debug=False)
 
         # configuration (see adafruit libs)
         self.gps.send_command(b'PMTK314,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0')
         self.gps.send_command(b'PMTK220,1000')
 
+        self.last_print = time.monotonic()
+
     # Connect to GPS sats
     def uplink(self):
-
-        self.last_print = time.monotonic()
 
         self.gps.update()
 
@@ -56,22 +56,32 @@ class Sensors:
                     self.gps.timestamp_utc.tm_min,
                     self.gps.timestamp_utc.tm_sec))
 
-    # print GPS data
-    def print(self):
-        print('Latitude: {0:.6f} degrees'.format(self.gps.latitude))
-        print('Longitude: {0:.6f} degrees'.format(self.gps.longitude))
-        print('Fix quality: {}'.format(self.gps.fix_quality))
+                print('Latitude: {0:.6f} degrees'.format(self.gps.latitude))
+                print('Longitude: {0:.6f} degrees'.format(self.gps.longitude))
+                print('Fix quality: {}'.format(self.gps.fix_quality))
 
-        # may not be present, check before printing
-        if self.gps.satellites is not None:
-            print('# satellites: {}'.format(self.gps.satellites))
-        if self.gps.altitude_m is not None:
-            print('Altitude: {} meters'.format(self.gps.altitude_m))
-        if self.gps.track_angle_deg is not None:
-            print('Speed: {} knots'.format(self.gps.speed_knots))
-        if self.gps.track_angle_deg is not None:
-            print('Track angle: {} degrees'.format(self.gps.track_angle_deg))
-        if self.gps.horizontal_dilution is not None:
-            print('Horizontal dilution: {}'.format(self.gps.horizontal_dilution))
-        if self.gps.height_geoid is not None:
-            print('Height geo ID: {} meters'.format(self.gps.height_geoid))
+                # may not be present, check before printing
+
+                # Number of connected sats
+                if self.gps.satellites is not None:
+                    print('# satellites: {}'.format(self.gps.satellites))
+
+                # Altitude in Meters
+                if self.gps.altitude_m is not None:
+                    print('Altitude: {} meters'.format(self.gps.altitude_m))
+
+                # Estimated ground speed in Knots
+                if self.gps.speed_knots is not None:
+                    print('Speed: {} knots'.format(self.gps.speed_knots))
+
+                # Active sat track angle
+                if self.gps.track_angle_deg is not None:
+                    print('Track angle: {} degrees'.format(self.gps.track_angle_deg))
+
+                # Estimated current Dilution of Precision
+                if self.gps.horizontal_dilution is not None:
+                    print('Horizontal dilution: {}'.format(self.gps.horizontal_dilution))
+
+                # Height above surface ellipsoid
+                if self.gps.height_geoid is not None:
+                    print('Height geo ID: {} meters'.format(self.gps.height_geoid))

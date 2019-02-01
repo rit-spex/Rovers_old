@@ -8,7 +8,7 @@ Authors: Alexander Olds,
 import pygame
 
 # Local Imports
-from drivetrain import *
+# rom drivetrain import *
 from sensors import *
 
 if __name__ == '__main__':
@@ -22,28 +22,25 @@ if __name__ == '__main__':
     sensors = Sensors()
     print("Done")
 
-    print("Establishing GPS uplink...")
-    sensors.uplink()
-
     print("Initializing Drivetrain...", end='')
-    drive = drivetrain()
+    # drive = drivetrain()
     print("Done")
 
     print("Initializing Controllers...", end='')
-    controller = pygame.joystick.Joystick(0)
-    controller.init()
+    # controller = pygame.joystick.Joystick(0)
+    #controller.init()
     print("Done")
 
-    print("Connected to" + controller.get_name())
+    #print("Connected to" + controller.get_name())
 
     print("Initialization Complete")
 
     # Main control loop
     while True:
-        sensors.print()
+        sensors.uplink()
 
         # update & pull controller inputs
-        pygame.event.pump()
+        #pygame.event.pump()
 
         # send inputs to drive
         drive.move(controller.getAxis(0), controller.getAxis(1))
