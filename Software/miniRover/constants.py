@@ -9,20 +9,20 @@ DEBUG = True
 
 # Drive Motors
 # TODO: Verify Motor and servo port #s
-LF_PORT = 0  # Front-Left
-LC_PORT = 1  # Central-Left
-LR_PORT = 3  # Rear-Left
+LF_PORT = 4  # Front-Left
+LC_PORT = 5  # Central-Left
+LR_PORT = 6  # Rear-Left
 
-RF_PORT = 4  # Front-Right
-RC_PORT = 5  # Central-Right
-RR_PORT = 6  # Rear-Right
+RF_PORT = 7  # Front-Right
+RC_PORT = 8  # Central-Right
+RR_PORT = 9  # Rear-Right
 
 # Corner Steering
-CS_LF_PORT = 7  # Front-Left
-CS_LR_PORT = 8  # Rear-Left
+CS_LF_PORT = 0  # Front-Left
+CS_LR_PORT = 1  # Rear-Left
 
-CS_RF_PORT = 9  # Front-Right
-CS_RR_PORT = 10  # Rear-Right
+CS_RF_PORT = 2  # Front-Right
+CS_RR_PORT = 3  # Rear-Right
 
 # Controller input codes (may need to be changed for different controllers)
 # TODO: Verify controller input codes

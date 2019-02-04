@@ -5,10 +5,12 @@ Authors: Alexander Olds,
 """
 
 # Package Imports
+import sys
+
 import pygame
 
 # Local Imports
-# rom drivetrain import *
+from drivetrain import *
 from sensors import *
 
 if __name__ == '__main__':
@@ -23,7 +25,7 @@ if __name__ == '__main__':
     print("Done")
 
     print("Initializing Drivetrain...", end='')
-    # drive = drivetrain()
+    drive = drivetrain()
     print("Done")
 
     print("Initializing Controllers...", end='')
@@ -37,12 +39,18 @@ if __name__ == '__main__':
 
     # Main control loop
     while True:
-        sensors.uplink()
+        try:
+            sensors.uplink()
 
-        # update & pull controller inputs
-        #pygame.event.pump()
+            # update & pull controller inputs
+            # pygame.event.pump()
 
-        # send inputs to drive
-        drive.move(controller.getAxis(0), controller.getAxis(1))
+            # send inputs to drive
+            # drive.move(controller.getAxis(0), controller.getAxis(1))
 
-        # TODO: add more drive functionality than movement
+            # TODO: add more drive functionality than movement
+
+        except KeyboardInterrupt:
+            print('\n')
+            print("Program Terminated by User")
+            sys.exit()

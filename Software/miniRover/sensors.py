@@ -25,7 +25,7 @@ class Sensors:
         self.current = 0
 
         # data
-        self.uart = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=3000)  # Assume GPS connected via USB
+        self.uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=3000)  # Assume GPS connected via USB
 
         # object instantiation
         self.gps = adafruit_gps.GPS(self.uart, debug=False)

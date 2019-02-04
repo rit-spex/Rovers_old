@@ -3,11 +3,11 @@ Drivetrain Class to handle movement
 Authors: Alexander Olds,
 """
 
+import adafruit_pca9685
+import board
 # Imports
 import busio
-from Adafruit_PCA9685 import *
 from adafruit_motor import servo
-from board import SCL, SDA
 
 # Local Imports
 from constants import *
@@ -17,20 +17,20 @@ class drivetrain:
 
     def __init__(self):
         # init i2c bus
-        self.i2c = busio.I2C(SCL, SDA)
+        self.i2c = busio.I2C(board.SCL, board.SDA)
 
         # init PWM controller
-        self.pwm = PCA9685(self.i2c)
+        self.pwm = adafruit_pca9685.PCA9685(self.i2c)
         self.pwm.frequency = 50
 
         # init drive motors on pins listed in constants.py
-        self.frontLeft = self.pwm.PWMChannel(self.pwm, LF_PORT)
-        self.centerLeft = self.pwm.PWMChannel(self.pwm, LC_PORT)
-        self.rearLeft = self.pwm.PWMChannel(self.pwm, LR_PORT)
+        self.frontLeft = self.pwm.channels[LF_PORT]
+        self.centerLeft = self.pwm.channels[LC_PORT]
+        self.rearLeft = self.pwm.channels[LR_PORT]
 
-        self.frontRight = self.pwm.PWMChannel(self.pwm, RF_PORT)
-        self.centerRight = self.pwm.PWMChannel(self.pwm, RC_PORT)
-        self.rearRight = self.pwm.PWMChannel(self.pwm, RC_PORT)
+        self.frontRight = self.pwm.channels[RF_PORT]
+        self.centerRight = self.pwm.channels[RC_PORT]
+        self.rearRight = self.pwm.channels[RR_PORT]
 
         # init cornersteer servos on pins listed in constants.py
         # TODO: Verify and set servo pulse limits
