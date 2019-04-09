@@ -98,12 +98,6 @@ material’s desired properties:
 These sheets were cut down to size and then holes and ventilation were drilled out when 
 necessary. 
 
-#### Shelf
-
-TODO 
-
-- Ease of access
-
 #### Air flow
 
 TODO
@@ -125,11 +119,11 @@ Why motors, raspi pwn hat etc...
 
 ### Power Delivery
 
-Why we overbuilt it...
+The Rocker-Bogie suspension design requires individually powered wheels. To power these motors, the Raspberry Pi, and the various other control elements, a 14.8V Lithium-Polymer battery is used. From the battery, the power system is split into two sections—a 12V section powering the motors, and a 5V section powering the Pi and other control elements. This is done with two seperate buck transformers, lowering the voltages to the required levels. Each motor is operated by a motor controller, and the motors are fused in pairs. The entire system is fused by way of the main power switch, which contains a 60A resettable fuse. 
 
 ### Motor Control
 
-PWM
+To control the rover, a Raspberry Pi running Raspbian is used as a central processor, with a codebase written in Python. A separate PWM driver is used to allow the Pi to output the six individual PWM signals necessary to control the motors.
 
 ## Software Stack
 
