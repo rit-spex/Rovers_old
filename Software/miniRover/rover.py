@@ -9,8 +9,8 @@ import sys
 
 import pygame
 
+from constants import *
 # Local Imports
-from drivetrain import *
 from sensors import *
 
 if __name__ == '__main__':
@@ -74,8 +74,8 @@ if __name__ == '__main__':
                 pygame.event.pump()
 
                 # send inputs to drive
-                throttle = (controller.getAxis(
-                    0) * 0x0667) + 0x1333  # 0x1333 center, 0x0ccc full reverse, 0x1999  full forward
+                # 0x1333 center, 0x0ccc full reverse, 0x1999  full forward
+                throttle = (controller.getAxis(0) * THROTTLE_MULTIPLIER * 0x0667) + 0x1333
                 turn = controller.getAxis(1)  # TODO: servo encoding
             else:
                 throttle = 0x000
@@ -92,6 +92,8 @@ if __name__ == '__main__':
             # TODO: Servo control
 
         except KeyboardInterrupt:
+
+            #  Stop all motors
             frontLeft.duty_cycle = 0x0000
             centerLeft.duty_cycle = 0x0000
             rearLeft.duty_cycle = 0x0000

@@ -9,6 +9,8 @@ DEBUG = True
 
 # Drive Motors
 # TODO: Verify Motor and servo port #s
+THROTTLE_MULTIPLIER = 0.7
+
 LF_PORT = 4  # Front-Left
 LC_PORT = 5  # Central-Left
 LR_PORT = 6  # Rear-Left
