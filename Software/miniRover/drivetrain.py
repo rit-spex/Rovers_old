@@ -21,7 +21,7 @@ class drivetrain:
 
         # init PWM controller
         self.pwm = adafruit_pca9685.PCA9685(self.i2c)
-        self.pwm.frequency = 50
+        self.pwm.frequency = 60
 
         # init drive motors on pins listed in constants.py
         self.frontLeft = self.pwm.channels[LF_PORT]
@@ -44,22 +44,13 @@ class drivetrain:
 
         # set motor PWM duty cycles and direction
         if 0 <= throttle <= 1:
-            self.frontLeft.duty_cycle = (0xffff * throttle)
-            self.centerLeft.duty_cycle = (0xffff * throttle)
-            self.rearLeft.duty_cycle = (0xffff * throttle)
+            self.frontLeft.duty_cycle = (0xffff)
+            self.centerLeft.duty_cycle = (0xffff)
+            self.rearLeft.duty_cycle = (0xffff)
 
-            self.frontRight.duty_cycle = (0xffff * throttle)
-            self.centerRight.duty_cycle = (0xffff * throttle)
-            self.rearRight.duty_cycle = (0xffff * throttle)
-        elif -1 <= throttle < 0:
-            # TODO: implement motor reverse
-            self.frontLeft.duty_cycle = (0xffff * abs(throttle))
-            self.centerLeft.duty_cycle = (0xffff * abs(throttle))
-            self.rearLeft.duty_cycle = (0xffff * abs(throttle))
-
-            self.frontRight.duty_cycle = (0xffff * abs(throttle))
-            self.centerRight.duty_cycle = (0xffff * abs(throttle))
-            self.rearRight.duty_cycle = (0xffff * abs(throttle))
+            self.frontRight.duty_cycle = (0xffff)
+            self.centerRight.duty_cycle = (0xffff)
+            self.rearRight.duty_cycle = (0xffff)
         else:
             ValueError("Throttle should be a multiplier between -1 and 1")
 
@@ -71,8 +62,8 @@ class drivetrain:
             self.servoRearLeft.angle = (90 + (180 * (turn + 1)))
             self.servoRearRight.angle = (90 + (180 * (turn + 1)))
         elif 0 <= turn <= 1:
-            self.servoFrontLeft.angle = (90 + (180 * turn))
-            self.servoFrontRight.angle = (90 + (180 * turn))
+            self.servoFrontLeft.angle = (0 + (90 * turn))
+            self.servoFrontRight.angle = (0 + (90 * turn))
 
             self.servoRearLeft.angle = (90 * turn)
             self.servoRearRight.angle = (90 * turn)
