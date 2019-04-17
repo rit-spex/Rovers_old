@@ -1,6 +1,6 @@
 """
 Multiple sensors-related classes to handle all external sensors, GPS, etc
-Authors: Alexander Olds,
+Authors: Alexander Olds, Thomas Hall
 """
 
 # imports
@@ -44,7 +44,6 @@ class Sensors:
         self.current = time.monotonic()
         if self.current - self.last_print >= 1.0:
             self.last_print = self.current
-            print("\033[7;1H")  # move cursor to rewrite to console instead of spamming
             if not self.gps.has_fix:
                 print('Waiting for fix...')
             else:

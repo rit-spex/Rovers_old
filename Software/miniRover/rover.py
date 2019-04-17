@@ -1,13 +1,14 @@
 """
 Core rover script for user I/O on the roverPi
 this is a top-level init/process control file, all processes should be separate and executed here.
-Authors: Alexander Olds,
+Authors: Alexander Olds, Thomas Hall
 """
 
 # Package Imports
 import sys
 
 import pygame
+from adafruit_servokit import ServoKit
 
 from constants import *
 # Local Imports
@@ -34,13 +35,16 @@ if __name__ == '__main__':
     pwm = adafruit_pca9685.PCA9685(i2c)
     pwm.frequency = 50
 
-    frontLeft = pwm.channels[LF_PORT]
-    centerLeft = pwm.channels[LC_PORT]
-    rearLeft = pwm.channels[LR_PORT]
+    servoKit = ServoKit(channels=16, i2c=i2c)
 
-    frontRight = pwm.channels[RF_PORT]
-    centerRight = pwm.channels[RC_PORT]
-    rearRight = pwm.channels[RR_PORT]
+    driveLeft = pwm.channels[L_PORT]
+    driveRight = pwm.channels[R_PORT]
+
+    frontLeftServo = servoKit.servo[CS_LF_PORT]
+    rearLeftServo = servoKit.servo[CS_LR_PORT]
+
+    frontRightServo = servoKit.servo[CS_RF_PORT]
+    rearRightServo = servoKit.servo[CS_RR_PORT]
 
     print("Done")
 
@@ -52,55 +56,64 @@ if __name__ == '__main__':
         controller.init()
         controller_connected = 1
 
-    except KeyboardInterrupt:  # TODO: figure out what exception is thrown when there's no controller connected
+    except pygame.error:
         controller_connected = -1
 
     if controller_connected > 0:
         print("Done")
         print("Connected to" + controller.get_name())
     else:
-        print("failed!")
-        print("Controller not connected")
+        print("Failed!")
+        print("Controller Not Connected")
 
     print("Initialization Complete")
 
     # Main control loop
     while True:
         try:
-            sensors.uplink()
-
+            """try:
+                sensors.uplink()
+            except UnicodeDecodeError:
+                print("Unicode Error, Trying Again...")
+"""
             # update & pull controller inputs
             if controller_connected > 0:
                 pygame.event.pump()
 
                 # send inputs to drive
-                # 0x1333 center, 0x0ccc full reverse, 0x1999  full forward
-                throttle = (controller.getAxis(0) * THROTTLE_MULTIPLIER * 0x0667) + 0x1333
-                turn = controller.getAxis(1)  # TODO: servo encoding
+                # 0x1444 center, 0x0ccc full reverse, 0x1ddd full forward
+                throttle = (controller.getAxis(0) * THROTTLE_MULTIPLIER * 0x1) + 0x1444
+
+                # 0x1333 center, 0x08f5 for left, 0x1d70 for right
+                turn = (controller.getAxis(1) * 90) + 90
             else:
-                throttle = 0x000
-                turn = 0x000
+                throttle = 0x1888  # 0x1444
+                turn = 90
 
-            frontLeft.duty_cycle = throttle
-            centerLeft.duty_cycle = throttle
-            rearLeft.duty_cycle = throttle
+            # motors
 
-            frontRight.duty_cycle = throttle
-            centerRight.duty_cycle = throttle
-            rearRight.duty_cycle = throttle
+            driveLeft.duty_cycle = throttle
+            driveRight.duty_cycle = throttle
 
-            # TODO: Servo control
+            # servos
+            frontLeftServo.angle = turn
+            frontRightServo.angle = turn
+
+            rearLeftServo.angle = -(turn - 180)
+            rearRightServo.angle = -(turn - 180)
 
         except KeyboardInterrupt:
 
             #  Stop all motors
-            frontLeft.duty_cycle = 0x0000
-            centerLeft.duty_cycle = 0x0000
-            rearLeft.duty_cycle = 0x0000
+            driveLeft.duty_cycle = 0x1444
+            driveRight.duty_cycle = 0x1444
 
-            frontRight.duty_cycle = 0x0000
-            centerRight.duty_cycle = 0x0000
-            rearRight.duty_cycle = 0x0000
+            # center all servos
+            frontLeftServo.angle = 90
+            frontRightServo.angle = 90
+
+            rearLeftServo.angle = 90
+            rearRightServo.angle = 90
 
             print('\n')
             print("Program Terminated by User")

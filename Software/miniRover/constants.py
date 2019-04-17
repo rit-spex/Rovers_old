@@ -1,7 +1,7 @@
 """
 Constants file for miniRover
 For clarity, contains all constants (usually port numbers)
-Authors: Alexander Olds,
+Authors: Alexander Olds, Thomas Hall
 """
 
 # DEBUG
@@ -11,19 +11,14 @@ DEBUG = True
 # TODO: Verify Motor and servo port #s
 THROTTLE_MULTIPLIER = 0.7
 
-LF_PORT = 4  # Front-Left
-LC_PORT = 5  # Central-Left
-LR_PORT = 6  # Rear-Left
-
-RF_PORT = 7  # Front-Right
-RC_PORT = 8  # Central-Right
-RR_PORT = 9  # Rear-Right
+L_PORT = 4  # Right
+R_PORT = 5  # Left
 
 # Corner Steering
 CS_LF_PORT = 0  # Front-Left
-CS_LR_PORT = 1  # Rear-Left
+CS_LR_PORT = 7  # Rear-Left
 
-CS_RF_PORT = 2  # Front-Right
+CS_RF_PORT = 1  # Front-Right
 CS_RR_PORT = 3  # Rear-Right
 
 # Controller input codes (may need to be changed for different controllers)
@@ -43,4 +38,4 @@ IN_LB = 1
 IN_START = 1
 IN_SEL = 1
 
-# Sensor-related pins
+# Sensor-related
