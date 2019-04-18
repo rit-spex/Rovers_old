@@ -9,7 +9,7 @@ DEBUG = True
 
 # Drive Motors
 # TODO: Verify Motor and servo port #s
-THROTTLE_MULTIPLIER = 0.7
+THROTTLE_MULTIPLIER = 1
 
 L_PORT = 4  # Right
 R_PORT = 5  # Left
@@ -37,5 +37,9 @@ IN_RB = 1
 IN_LB = 1
 IN_START = 1
 IN_SEL = 1
+
+# joysticks
+LEFT_STICK = 1
+RIGHT_STICK = 1
 
 # Sensor-related

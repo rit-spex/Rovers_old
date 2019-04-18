@@ -7,7 +7,7 @@ Authors: Alexander Olds, Thomas Hall
 # Package Imports
 import sys
 
-import pygame
+import evdev
 from adafruit_servokit import ServoKit
 
 from constants import *
@@ -21,10 +21,6 @@ if __name__ == '__main__':
     import adafruit_pca9685
 
     # Initialization
-
-    print("Initializing Pygame...", end='')
-    pygame.joystick.init()
-    print("Done")
 
     print("Initializing Sensors...", end='')
     sensors = Sensors()
@@ -50,18 +46,19 @@ if __name__ == '__main__':
 
     print("Initializing Controllers...", end='')
 
+    xAxis = 0
+    yAxis = 0
     controller = 0
     try:
-        controller = pygame.joystick.Joystick(0)
-        controller.init()
+        controller = evdev.InputDevice('/dev/input/event0')
         controller_connected = 1
 
-    except pygame.error:
+    except KeyboardInterrupt:
         controller_connected = -1
 
     if controller_connected > 0:
         print("Done")
-        print("Connected to" + controller.get_name())
+        print("Connected to input device")
     else:
         print("Failed!")
         print("Controller Not Connected")
@@ -74,33 +71,53 @@ if __name__ == '__main__':
             """try:
                 sensors.uplink()
             except UnicodeDecodeError:
-                print("Unicode Error, Trying Again...")
-"""
+                print("Unicode Error, Trying Again...")"""
+
             # update & pull controller inputs
             if controller_connected > 0:
-                pygame.event.pump()
+                for event in controller.read_loop():
+                    if event.type == evdev.ecodes.EV_ABS:
+                        if event.code == 1:
+                            yAxis = round((-(event.value / 32767) + 1), 3)
+                        elif event.code == 1:
+                            xAxis = round((event.value / 32767), 3)
 
-                # send inputs to drive
-                # 0x1444 center, 0x0ccc full reverse, 0x1ddd full forward
-                throttle = (controller.getAxis(0) * THROTTLE_MULTIPLIER * 0x1) + 0x1444
+                    # send inputs to drive
+                    # 0x1444 center, 0x0ccc full reverse, 0x1ddd full forward
+                    throttle = (yAxis * THROTTLE_MULTIPLIER * 0x0778) + 0x1444
 
-                # 0x1333 center, 0x08f5 for left, 0x1d70 for right
-                turn = (controller.getAxis(1) * 90) + 90
+                    # 0x1333 center, 0x08f5 for left, 0x1d70 for right
+                    # turn = (xAxis * 90) + 90
+
+                    print(hex(int(throttle)))
+
+                    # motors
+                    driveLeft.duty_cycle = int(throttle)
+                    driveRight.duty_cycle = int(throttle)
+
+                    # servos
+                    # frontLeftServo.angle = turn
+                    # frontRightServo.angle = turn
+
+                    # rearLeftServo.angle = -(turn - 180)
+                    # rearRightServo.angle = -(turn - 180)
             else:
-                throttle = 0x1888  # 0x1444
+                throttle = 0x1444  # 0x1444
                 turn = 90
 
             # motors
 
-            driveLeft.duty_cycle = throttle
-            driveRight.duty_cycle = throttle
+            # print(throttle, turn)
+
+            # driveLeft.duty_cycle = throttle
+            # driveRight.duty_cycle = throttle
 
             # servos
-            frontLeftServo.angle = turn
-            frontRightServo.angle = turn
+            # frontLeftServo.angle = turn
+            # frontRightServo.angle = turn
 
-            rearLeftServo.angle = -(turn - 180)
-            rearRightServo.angle = -(turn - 180)
+            # rearLeftServo.angle = -(turn - 180)
+            # rearRightServo.angle = -(turn - 180)
 
         except KeyboardInterrupt:
 
