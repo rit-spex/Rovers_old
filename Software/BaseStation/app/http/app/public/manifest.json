@@ -1,0 +1,15 @@
+{
+  "short_name": "RIT SPEX URC",
+  "name": "RIT SPEX URC Rover",
+  "icons": [
+    {
+      "src": "spex_icon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
